@@ -5,6 +5,8 @@
  * This project uses AccelStepper.h library which can be downloaded from http://www.airspayce.com/mikem/arduino/AccelStepper/index.html.
  *  
  */
+ 
+ //testi
 
 #include "Arduino.h"
 #include "AccelStepper.h"
@@ -32,7 +34,8 @@ const byte baseGearRatio=8;
 const byte tiltGearRatio=8;
 const int turnSteps=200*16*baseGearRatio;//using 16th step =25600 steps/360 degrees
 const int tiltSteps=(200*16*tiltGearRatio); //=25600
-
+unsigned int xSpeed=2000;
+unsigned int ySpeed=2000;
 byte menuScreen=0; //Current selected menu item
 const byte menuSize=5; //(0-5), Easier to give the size of an array manually than trying to read it
 const String menu[6]={"Settings","360x180","360","180","Time-lapse","testi"};
@@ -94,8 +97,8 @@ byte downArrow[8]={
 void setup()
 {
   Serial.begin(9600);
-  Xaxis.setMaxSpeed(4000);
-  Yaxis.setMaxSpeed(4000);
+  Xaxis.setMaxSpeed(xSpeed);
+  Yaxis.setMaxSpeed(ySpeed);
   Xaxis.setAcceleration(2000.0);
   Yaxis.setAcceleration(2000.0);
 
@@ -232,11 +235,11 @@ void settings(){
             lcd.clear();
             break;
         case 4:
-            //X-speed, not implemented yet
+            xSpeedSettings();
             lcd.clear();
             break;
         case 5:
-            //Y-speed, not implemented yet
+            ySpeedSettings();
             lcd.clear();
             break;
       }
@@ -340,14 +343,10 @@ void shutterSettings(){
       lcd.setCursor(0,0);
       lcd.write(byte(0));
     }
-
     lcd.setCursor(2,0);
     lcd.print("Shutter (ms)");
-
-
     lcd.setCursor(0,1);
     lcd.write(byte(1));
-
     lcd.setCursor(2,1);
     lcd.print(expoTime,DEC);
 
@@ -385,6 +384,75 @@ void shutterSettings(){
   }
 
 }
+
+void xSpeedSettings(){
+  lcd.clear();
+  bool exit=false;
+  while(exit==false){
+    if(xSpeed!=0){
+    lcd.setCursor(0,0);
+    lcd.write(byte(0));
+    }
+    lcd.setCursor(2,0);
+    lcd.print("X speed");
+    lcd.setCursor(0,1);
+    lcd.write(byte(1));
+    lcd.setCursor(2,1);
+    lcd.print(xSpeed,DEC);
+    
+    switch(buttonPress()){
+      case 2:
+        xSpeed+=100;
+        break;
+
+      case 3:
+        if(xSpeed>=100){
+          xSpeed-=100;
+        }
+        break;
+
+      case 1:
+        Xaxis.setMaxSpeed(xSpeed);
+        exit=true;
+        break;
+    }
+  }
+}
+
+void ySpeedSettings(){
+  lcd.clear();
+  bool exit=false;
+  while(exit==false){
+    if(ySpeed!=0){
+    lcd.setCursor(0,0);
+    lcd.write(byte(0));
+    }
+    lcd.setCursor(2,0);
+    lcd.print("Y speed");
+    lcd.setCursor(0,1);
+    lcd.write(byte(1));
+    lcd.setCursor(2,1);
+    lcd.print(ySpeed,DEC);
+    
+    switch(buttonPress()){
+      case 2:
+        ySpeed+=100;
+        break;
+
+      case 3:
+        if(ySpeed>=100){
+          ySpeed-=100;
+        }
+        break;
+
+      case 1:
+        Yaxis.setMaxSpeed(ySpeed);
+        exit=true;
+        break;
+    }
+  }
+}
+
 
 void timelapseMenu(){
   lcd.clear();
