@@ -352,11 +352,11 @@ void shutterSettings(){
 
 
 
-  if(millis()-buttonStartTime>=1000 && millis()-buttonStartTime<=1999){
+  if(millis()-buttonStartTime>=1000 && millis()-buttonStartTime<=2999){
     expoAdjustment=10;
-  }else if(millis()-buttonStartTime>=2000 && millis()-buttonStartTime<=2999){
+  }else if(millis()-buttonStartTime>=3000 && millis()-buttonStartTime<=4999){
     expoAdjustment=50;
-  }else if(millis()-buttonStartTime>=3000){
+  }else if(millis()-buttonStartTime>=5000){
     expoAdjustment=200;
   }
     
