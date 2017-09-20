@@ -771,7 +771,7 @@ int buttonPress(){
 }
 
 
-void shoot(int shootTime){
+void shoot(unsigned long shootTime){
   Serial.println((String)"Shooting at:"+Xaxis.currentPosition()+","+Yaxis.currentPosition());
   digitalWrite(cameraPin, HIGH);
   delay(shootTime);
@@ -931,14 +931,31 @@ void timelapse(){
 
     if(i==1){
       delay(stabilizingTime);
-      shoot(expoTime);
+      //shoot(expoTime);
+        
+        unsigned long timeNow=millis();
+        while(timeNow+expoTime>millis()){
+          digitalWrite(cameraPin, HIGH);
+          lcd.setCursor(8,0);
+          lcd.print((expoTime-(millis()-timeNow))/1000);
+          }
+          digitalWrite(cameraPin, LOW);
+        
+      
       delay(stabilizingTime);
       delay(intervalTime);
     }else{
       Xaxis.runToNewPosition(Xaxis.currentPosition()+xShift);
       Yaxis.runToNewPosition(Yaxis.currentPosition()+yShift);
       delay(stabilizingTime);
-      shoot(expoTime);
+     // shoot(expoTime);
+             unsigned long timeNow=millis();
+        while(timeNow+expoTime>millis()){
+          digitalWrite(cameraPin, HIGH);
+          lcd.setCursor(8,0);
+          lcd.print((expoTime-(millis()-timeNow))/1000);
+          }
+          digitalWrite(cameraPin, LOW);
       delay(stabilizingTime);
       delay(intervalTime);
     }
