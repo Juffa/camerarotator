@@ -6,7 +6,7 @@
  *  
  */
  
- //testi
+ 
 
 #include "Arduino.h"
 #include "AccelStepper.h"
